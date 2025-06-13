@@ -7,6 +7,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import retanar.ttmolfar.subliminals.SubliminalsScreen
 
 @Composable
 internal fun AppNavHost(navController: NavHostController, modifier: Modifier = Modifier) {
@@ -16,6 +17,13 @@ internal fun AppNavHost(navController: NavHostController, modifier: Modifier = M
         modifier = modifier,
     ) {
         composable(route = Routes.Subliminals.ROUTE) {
+            SubliminalsScreen(
+                onItemClick = { title ->
+                    navController.navigate(
+                        Routes.Details.constructRoute(title)
+                    )
+                }
+            )
         }
 
         composable(

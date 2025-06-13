@@ -1,5 +1,6 @@
 package retanar.ttmolfar
 
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
@@ -25,6 +26,7 @@ internal fun AppContent() {
                 currentDestination = backStackEntry?.destination,
             )
         },
+        contentWindowInsets = WindowInsets(0)
     ) { innerPadding ->
         AppNavHost(
             navController = navController,
