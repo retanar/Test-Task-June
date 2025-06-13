@@ -11,6 +11,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
 import retanar.ttmolfar.R
 import retanar.ttmolfar.subliminals.AppIconButton
 import retanar.ttmolfar.util.Dimens
@@ -32,7 +33,8 @@ fun DetailsScreen(title: String, popBackStack: () -> Unit) {
             text = title,
             style = MaterialTheme.typography.headlineLarge,
             color = MaterialTheme.colorScheme.primary,
-            modifier = Modifier.align(Alignment.Center)
+            modifier = Modifier.align(Alignment.Center),
+            textAlign = TextAlign.Center
         )
     }
 }
