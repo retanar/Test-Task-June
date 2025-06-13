@@ -5,11 +5,13 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -39,11 +41,13 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import retanar.ttmolfar.R
 import retanar.ttmolfar.theme.ShadowBlack
 import retanar.ttmolfar.util.Dimens
+import retanar.ttmolfar.util.showComingSoonToast
 
 val itemList = List(10) {
     SubliminalItemState(R.drawable.ic_launcher_foreground, "Title $it", "Desc")
@@ -51,33 +55,62 @@ val itemList = List(10) {
 
 @Composable
 fun SubliminalsScreen(onItemClick: (title: String) -> Unit) {
-    LazyColumn {
-        item {
-            Spacer(Modifier.windowInsetsPadding(WindowInsets.statusBars))
-            Spacer(Modifier.height(Dimens.TopPadding))
+    val context = LocalContext.current
 
-            Row(modifier = Modifier.padding(horizontal = Dimens.ContentPadding)) {
-                AppIconButton(
-                    iconRes = R.drawable.info,
-                    onClick = {}
-                )
-                Spacer(Modifier.weight(1f))
-                AppIconButton(
-                    iconRes = R.drawable.search,
-                    onClick = {}
-                )
+    Box {
+        BackgroundShapes()
+
+        LazyColumn {
+            item {
+                Spacer(Modifier.windowInsetsPadding(WindowInsets.statusBars))
+                Spacer(Modifier.height(Dimens.TopPadding))
+
+                Row(modifier = Modifier.padding(horizontal = Dimens.ContentPadding)) {
+                    AppIconButton(
+                        iconRes = R.drawable.info,
+                        onClick = { context.showComingSoonToast() }
+                    )
+                    Spacer(Modifier.weight(1f))
+                    AppIconButton(
+                        iconRes = R.drawable.search,
+                        onClick = { context.showComingSoonToast() }
+                    )
+                }
+
+                Spacer(Modifier.height(22.dp))
+
+                Header()
+
+                Spacer(Modifier.height(22.dp))
             }
 
-            Spacer(Modifier.height(22.dp))
-
-            Header()
-
-            Spacer(Modifier.height(22.dp))
+            items(itemList) {
+                SubliminalItem(it) { onItemClick(it.title) }
+            }
         }
+    }
+}
 
-        items(itemList) {
-            SubliminalItem(it) { onItemClick(it.title) }
-        }
+@Composable
+fun BackgroundShapes() {
+    Box(Modifier.fillMaxSize()) {
+        Image(
+            painter = painterResource(R.drawable.background_shape_top),
+            contentDescription = null,
+            colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.tertiaryContainer),
+            modifier = Modifier
+                .align(Alignment.TopStart)
+                .padding(top = 7.dp)
+        )
+
+        Image(
+            painter = painterResource(R.drawable.background_shape_bottom),
+            contentDescription = null,
+            colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.tertiaryContainer),
+            modifier = Modifier
+                .align(Alignment.BottomEnd)
+                .padding(top = 316.dp)
+        )
     }
 }
 

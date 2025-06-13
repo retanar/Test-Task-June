@@ -7,6 +7,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import retanar.ttmolfar.details.DetailsScreen
 import retanar.ttmolfar.subliminals.SubliminalsScreen
 
 @Composable
@@ -31,6 +32,7 @@ internal fun AppNavHost(navController: NavHostController, modifier: Modifier = M
             arguments = Routes.Details.arguments
         ) { backStackEntry ->
             val title = backStackEntry.arguments?.getString(Routes.Details.ARG_TITLE).toString()
+            DetailsScreen(title = title, popBackStack = { navController.popBackStack() })
         }
     }
 }

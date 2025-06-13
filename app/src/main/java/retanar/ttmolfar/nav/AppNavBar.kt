@@ -9,10 +9,12 @@ import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import retanar.ttmolfar.R
+import retanar.ttmolfar.util.showComingSoonToast
 
 @Composable
 internal fun AppNavBar(
@@ -26,6 +28,7 @@ internal fun AppNavBar(
         containerColor = MaterialTheme.colorScheme.primaryContainer
     ) {
         NavBarItems.entries.forEach { item ->
+            val context = LocalContext.current
             val isSelected = currentDestination?.hierarchy
                 ?.any { it.route == item.topRoute }
                 ?: false
@@ -35,6 +38,8 @@ internal fun AppNavBar(
                 onClick = {
                     if (item.topRoute != ROUTE_PLACEHOLDER) {
                         openNavBarRoute(item.topRoute)
+                    } else {
+                        context.showComingSoonToast()
                     }
                 },
                 icon = { Icon(painterResource(item.icon), null) },
