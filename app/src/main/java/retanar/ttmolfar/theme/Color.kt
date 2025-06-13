@@ -8,7 +8,7 @@ val LightBlue = Color(0xFF415871)
 val SkyBlue = Color(0xFF6ABED0)
 val Gray = Color(0xFF8A8E9A)
 val SmokeWhite = Color(0xFFF6F9FA)
-val ShadowBlack = Color(0x30000000)
+val ShadowBlack = Color(0x08000000)
 val LightSkyBlue = Color(0xFFE1F3F8)
 
 val AppColorScheme = lightColorScheme(

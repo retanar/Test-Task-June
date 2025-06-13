@@ -34,18 +34,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.drawBehind
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.PersistentList
 import retanar.ttmolfar.R
-import retanar.ttmolfar.theme.ShadowBlack
 import retanar.ttmolfar.util.Dimens
+import retanar.ttmolfar.util.dropShadow
 import retanar.ttmolfar.util.showComingSoonToast
 
 @Composable
@@ -192,19 +188,21 @@ private fun SubliminalItem(state: SubliminalItemState, onClick: () -> Unit) {
     Column(
         Modifier
             .padding(horizontal = Dimens.ContentPadding)
-            .drawBehind {
-                val offset = (91).dp.toPx()
-                drawRect(
-                    Brush.verticalGradient(
-                        colors = listOf(ShadowBlack, Color.Transparent),
-                    ),
-                    topLeft = Offset(0f, offset)
-                )
-            }
+        /*.drawBehind {
+            val offset = (91).dp.toPx()
+            drawRect(
+                Brush.verticalGradient(
+                    colors = listOf(ShadowBlack, Color.Transparent),
+                ),
+                topLeft = Offset(0f, offset)
+            )
+        }*/
     ) {
         Card(
             onClick = onClick,
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .dropShadow(MaterialTheme.shapes.extraLarge),
             shape = MaterialTheme.shapes.extraLarge,
             colors = CardDefaults.cardColors(
                 containerColor = MaterialTheme.colorScheme.primaryContainer
