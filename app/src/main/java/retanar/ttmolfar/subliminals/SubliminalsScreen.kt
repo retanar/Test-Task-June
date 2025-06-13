@@ -31,9 +31,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
@@ -44,18 +42,18 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import kotlinx.collections.immutable.PersistentList
 import retanar.ttmolfar.R
 import retanar.ttmolfar.theme.ShadowBlack
 import retanar.ttmolfar.util.Dimens
 import retanar.ttmolfar.util.showComingSoonToast
 
-val itemList = List(10) {
-    SubliminalItemState(R.drawable.ic_launcher_foreground, "Title $it", "Desc")
-}
-
 @Composable
 fun SubliminalsScreen(onItemClick: (title: String) -> Unit) {
     val context = LocalContext.current
+
+    // Not saveable
+    val state = remember { ScreenState() }
 
     Box {
         BackgroundShapes()
@@ -79,12 +77,15 @@ fun SubliminalsScreen(onItemClick: (title: String) -> Unit) {
 
                 Spacer(Modifier.height(22.dp))
 
-                Header()
+                Header(
+                    chips = state.chips,
+                    selectedChipIndex = state.selectedChipIndex,
+                    selectChip = { state.selectedChipIndex = it })
 
                 Spacer(Modifier.height(22.dp))
             }
 
-            items(itemList) {
+            items(state.itemList) {
                 SubliminalItem(it) { onItemClick(it.title) }
             }
         }
@@ -135,11 +136,12 @@ fun AppIconButton(
     }
 }
 
-private val chips = listOf("All together", "For women", "For men", "Health", "Something else")
-private var selectedIndex by mutableIntStateOf(0)
-
 @Composable
-private fun Header() = Column(modifier = Modifier.fillMaxWidth()) {
+private fun Header(
+    chips: PersistentList<String>,
+    selectedChipIndex: Int,
+    selectChip: (Int) -> Unit
+) = Column(modifier = Modifier.fillMaxWidth()) {
     Text(
         text = "Good morning!",
         modifier = Modifier.padding(horizontal = Dimens.ContentPadding),
@@ -163,7 +165,7 @@ private fun Header() = Column(modifier = Modifier.fillMaxWidth()) {
         contentPadding = PaddingValues(horizontal = Dimens.ContentPadding)
     ) {
         itemsIndexed(chips) { i, title ->
-            val (backgroundColor, textColor) = if (i == selectedIndex) {
+            val (backgroundColor, textColor) = if (i == selectedChipIndex) {
                 MaterialTheme.colorScheme.primary to MaterialTheme.colorScheme.onPrimary
             } else {
                 MaterialTheme.colorScheme.secondaryContainer to MaterialTheme.colorScheme.onSecondaryContainer
@@ -175,7 +177,7 @@ private fun Header() = Column(modifier = Modifier.fillMaxWidth()) {
                 color = textColor,
                 modifier = Modifier
                     .background(backgroundColor, MaterialTheme.shapes.medium)
-                    .clickable { selectedIndex = i }
+                    .clickable { selectChip(i) }
                     .padding(
                         horizontal = Dimens.ChipPaddingHorizontal,
                         vertical = Dimens.ChipPaddingVertical
@@ -215,7 +217,7 @@ private fun SubliminalItem(state: SubliminalItemState, onClick: () -> Unit) {
                     .padding(Dimens.SubliminalItemContentPadding)
             ) {
                 Image(
-                    painter = painterResource(state.image),
+                    imageVector = state.image,
                     contentDescription = null,
                     modifier = Modifier.size(Dimens.SubliminalItemImageSize),
                     colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.primary)
@@ -240,9 +242,3 @@ private fun SubliminalItem(state: SubliminalItemState, onClick: () -> Unit) {
         Spacer(Modifier.height(Dimens.SubliminalItemSpacing))
     }
 }
-
-data class SubliminalItemState(
-    @DrawableRes val image: Int,
-    val title: String,
-    val description: String,
-)
