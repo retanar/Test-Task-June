@@ -2,10 +2,13 @@ package retanar.ttmolfar.nav
 
 import androidx.annotation.DrawableRes
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
@@ -19,7 +22,9 @@ internal fun AppNavBar(
     // Hide navbar when not at top level
     if (NavBarItems.entries.none { currentDestination?.route == it.topRoute }) return
 
-    NavigationBar {
+    NavigationBar(
+        containerColor = MaterialTheme.colorScheme.primaryContainer
+    ) {
         NavBarItems.entries.forEach { item ->
             val isSelected = currentDestination?.hierarchy
                 ?.any { it.route == item.topRoute }
@@ -34,6 +39,13 @@ internal fun AppNavBar(
                 },
                 icon = { Icon(painterResource(item.icon), null) },
                 label = { Text(item.title) },
+                colors = NavigationBarItemDefaults.colors(
+                    selectedIconColor = MaterialTheme.colorScheme.tertiary,
+                    selectedTextColor = MaterialTheme.colorScheme.tertiary,
+                    unselectedIconColor = MaterialTheme.colorScheme.primary,
+                    unselectedTextColor = MaterialTheme.colorScheme.primary,
+                    indicatorColor = Color.Transparent
+                )
             )
         }
     }

@@ -11,9 +11,6 @@ object Dimens {
     val ChipPaddingHorizontal = 16.dp
     val ChipPaddingVertical = 10.dp
 
-    val ItemCardElevation = 10.dp
-    val ItemCardElevationPressed = 8.dp
-
     val SubliminalItemSpacing = 20.dp
     val SubliminalItemContentSpacing = 20.dp
     val SubliminalItemContentPadding = 19.dp
